@@ -1,4 +1,4 @@
-# ColMsg HTML Viewer
+# Colmsg HTML Viewer
 Note: This project is a modified version of [ktsh2024/colmsg_html](https://github.com/ktsh2024/colmsg_html).
 
 
