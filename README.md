@@ -13,7 +13,7 @@ Note: This project is a modified version of [ktsh2024/colmsg_html](https://githu
 ![Generated chat view example](https://raw.githubusercontent.com/A872356/colmsg_html/refs/heads/main/.github/images/example.png)
 ---
 
-## 🚀 How to Use
+## How to Use
 
 You must have Python 3 installed on your system.
 
