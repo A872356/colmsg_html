@@ -357,71 +357,58 @@ def loopList():
 
 if __name__ == "__main__":
     
-    # --- 1. Determine Base Directory ---
+    # --- 1. Determine Base Directory (System Downloads Folder) ---
     
-    # Attempt to get the accurate Windows Downloads path first
     windows_path = get_windows_download_path()
     
     if windows_path:
         base_dir = windows_path
-        default_source = "Windows Registry"
+        default_source = "Windows Registry (Downloads)"
     else:
-        # Fallback to cross-platform default (Home/Downloads)
         try:
             base_dir = str(Path.home() / 'Downloads')
-            default_source = "Path.home() / 'Downloads'"
+            default_source = "Path.home() / 'Downloads' (Fallback)"
         except:
-            # Final fallback to script directory
             base_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
-            default_source = "Script Folder"
+            default_source = "Script Folder (Fallback)"
             
         
-    # --- 2. Process Arguments and Set Paths ---
+    # --- 2. Set Input/Output Paths ---
     
-    if len(sys.argv) >= 2:
-        # Override default base_dir with first argument
-        base_dir = os.path.abspath(sys.argv[1])
-        default_source = "Argument 1"
-
-    # Default Input Path: base_dir + 'colmsg'
     parent_dir = os.path.join(base_dir, "colmsg")
     
-    # Default Output Path: base_dir + 'colmsg-html'
     OUTPUT_PATH = os.path.join(base_dir, "colmsg-html")
     
-    
-    # Override Output Path with second argument
-    if len(sys.argv) >= 3:
-        OUTPUT_PATH = os.path.abspath(sys.argv[2])
-        
-    # --- 3. Check and Create Output Directory ---
-    
-    if not os.path.exists(OUTPUT_PATH):
-        try:
-            os.makedirs(OUTPUT_PATH)
-            print(f"Created output directory: {OUTPUT_PATH}")
-        except OSError as e:
-            print(f"Error creating output directory {OUTPUT_PATH}: {e}")
-            sys.exit(1)
-
-    # --- 4. Interactive Nick Name Prompt ---
+    # --- 3. Process NICK NAME  ---
     
     default_nickname_display = NICK_NAME.strip('<b>').strip('</b>')
     
-    print("\n--- Configuration Summary ---")
-    print(f"Input Directory: {parent_dir}")
-    print(f"Output Directory: {OUTPUT_PATH}\n")
-    
-    try:
-        nickname_input = input(f"Please enter your Nick Name (default: {default_nickname_display}): ")
-    except EOFError:
-        nickname_input = "" 
-        print("Non-interactive session detected, using default nickname.")
-        
-    if nickname_input:
+    if len(sys.argv) >= 2 and sys.argv[1]:
+        # Argument
+        nickname_input = sys.argv[1] 
         NICK_NAME = f"<b>{nickname_input}</b>"
+        
+        print("\n--- Configuration Summary ---")
+        print(f"Input Directory: {parent_dir}")
+        print(f"Output Directory: {OUTPUT_PATH}")
+        print(f"Using Nickname: {NICK_NAME.strip('<b>').strip('</b>')}\n")
+        
+    else:
+        # No Argument
+        print("\n--- Configuration Summary ---")
+        print(f"Input Directory: {parent_dir}")
+        print(f"Output Directory: {OUTPUT_PATH}")
+        
+        try:
+            nickname_input = input(f"Please enter your Nick Name (default: {default_nickname_display}): ")
+        except EOFError:
+            nickname_input = "" 
+            
+        if nickname_input:
+            NICK_NAME = f"<b>{nickname_input}</b>"
+
     
-    # --- 5. Execute Main Logic ---
+    # --- 4. Execute Main Logic ---
     
     if not os.path.exists(parent_dir):
         print(f"Error: Input directory not found: {parent_dir}")

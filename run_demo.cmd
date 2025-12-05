@@ -1,6 +1,7 @@
+chcp 65001
 @echo off
 
 set NICKNAME_INPUT=<Your Nickname>
 
-echo %NICKNAME_INPUT% | python colmsg_html.py
+powershell -Command "python colmsg_html.py \"%NICKNAME_INPUT%\""
 pause
